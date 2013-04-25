@@ -53,7 +53,8 @@ send_message(std::string msg) {
 #endif
     int bytes_sent = 0,
         tmp_sent = 0,
-        str_size = strlen(bytes);
+        str_size = strlen(bytes),
+        ret = 0;
     /* get the lock and socket of this client */
     pthread_mutex_t * lock = this->get_write_lock();
     int send_sock = this->get_socket();
@@ -68,12 +69,13 @@ send_message(std::string msg) {
         /* Check if send failed, and return the number of
          * bytes sent if the send failed */
         if (tmp_sent == -1) {
-            return bytes_sent;
+            ret = bytes_sent;
+            break;
         }
         bytes_sent += tmp_sent;
     }
     pthread_mutex_unlock(lock);
-    return 0;
+    return ret;
 }
 
 /* Initialize the Server */
