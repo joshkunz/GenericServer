@@ -1,0 +1,30 @@
+GenericServer
+==============
+
+This is a basic multi-threaded server implementation I wrote as part of 
+a larger project for a class. I really liked the way its interface is structured,
+so I thought I would post the source online.
+
+# Overview
+
+To use it, you create a `Server` object. This object handles the code
+for listening for connections on an interface and a port. When a client
+connects, it generates a new client object that runs in a separate thread, given
+the object complete control over a connection if it wishes. 
+
+There's also an automatically created `Broadcast` object that allows for inter-client
+communication. Clients can subscribe to channels on the broadcast object. When
+one client wants to send data to the other clients, it can 'broadcast' this
+data on channel, and the data will get sent out on all client connections.
+
+Finally there's a client abstraction object called `LineClient`, this is where
+most of the meat is. It's a fairly common use-case for applications to 
+accept both line-oriented and raw data from a client. LineClient will automatically
+(and efficiently) buffer lines of data that will then be passed up to a
+higher level abstraction (a subclass). The upper level can set the LineClient
+into a raw state, and the line client will automatically buffer the data
+until the requested number of characters (it supports full utf-8) has been 
+reached.
+
+That's pretty much it. The source is short, and it's very well documented, 
+so dig in if you like this kind of stuff.
