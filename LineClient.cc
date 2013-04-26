@@ -161,8 +161,8 @@ check_chars(int byte_count) {
 
         /* If we have all of the characters we need */
         if (this->characters_required == this->character_count) {
-            /* The 'next' byte */
-            next_byte = i + 1;
+            /* This v */
+            next_byte = i+1;
 
             /* call the 'raw receive' method with the buffer, as a string */
             this->receive_raw(std::string(this->line_buffer, this->byte_count));
@@ -172,14 +172,14 @@ check_chars(int byte_count) {
             /* store a pointer to the old buffer */
             char * tmp_buffer = this->line_buffer;
             /* create a new buffer for the remaining bytes */
-            this->line_buffer = (char *) malloc(sizeof(char) * (this->buffer_len - next_byte));
+            this->line_buffer = (char *) malloc(sizeof(char) * (this->buffer_len - this->byte_count));
             /* copy the remaining characters to the new buffer */
-            memcpy(this->line_buffer, tmp_buffer + next_byte, this->buffer_len - next_byte);
+            memcpy(this->line_buffer, tmp_buffer + next_byte, this->buffer_len - this->byte_count);
             /* free up the old buffer */
             free(tmp_buffer);
 
             /* fix the buffer length */
-            this->buffer_len -= next_byte;
+            this->buffer_len -= this->byte_count;
 
             /* fix the 'last' pointer */
             this->last = this->line_buffer;
